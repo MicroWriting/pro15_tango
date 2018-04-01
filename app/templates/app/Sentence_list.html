@@ -12,7 +12,7 @@
         <div class="card-body">
                 <ul class = "list-group order">
                     {% for tag in tags %}
-                    <li class = "list-group-item"><a href="{% url 'app:tag' tag.name %}">{{ tag.name }}</a></li>
+                    <li class = "list-group-item order-child"><a href="{% url 'app:tag' tag.name %}">{{ tag.name }}</a></li>
                     {% endfor %}
                 </ul>
         </div>
@@ -45,26 +45,27 @@
 {% endblock %}
 
 {% block domready %}
+<!--
     <script>
     $(function() {
             $(".order").sortable();
         });
     </script>
-<!--
+-->
+
 <script>
     $(function() {
         $(".order").sortable({
-        update: function(event, ui) {
-            var updateinfo = $('.order').sortable('serialize');
-        }
-        });
+            update: function (event, ui) {
+                var updateinfo = $('.order').sortable('serialize');
 
-   $.ajax({
-      type: 'POST',
-      url: "",
-      data: updateinfo,
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'app:sort' %}",
+                    data: updateinfo,
+                });
+            }
+        });
     });
-    }
-    );
--->
+</script>
 {% endblock %}
