@@ -43,11 +43,12 @@ class ModuleOrderView (CsrfExemptMixin, JsonRequestResponseMixin, View):
         for id, order in self.request_json.items():
 """
 
-"""
+
 @csrf_exempt
 def sort(request):
-    for index, tag_pk in enumerate(request.POST.getlist('tag[]')):
+    for index, tag_pk in enumerate(request.POST.getlist('order-child[]')):
         tag = get_object_or_404(Tag, pk=tag_pk)
         tag.order = index
         tag.save()
-"""
+
+    return HttpResponse('')
