@@ -57,7 +57,10 @@
     $(function() {
         $(".order").sortable({
             update: function (event, ui) {
-                var updateinfo = $('.order').sortable('serialize');
+                var updateinfo = $('.order').sortable().sortable('serialize');
+                console.log($('.order'));
+                console.log(updateinfo);
+                console.log($(this).serialize());
 
                 $.ajax({
                     type: 'POST',

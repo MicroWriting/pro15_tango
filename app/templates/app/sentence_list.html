@@ -1,0 +1,77 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+    <div class="container mt-4">
+    <div class="row">
+    <div class="col-md-4 order-md-2 mt-3">
+        <div class="card">
+        <div class="card-header">
+        <h5 class="card-title">Tag</h5>
+        </div>
+        <div class="card-body">
+                <ul class = "list-group order">
+                    {% for tag in tags %}
+                    {% with tag.id|stringformat:"s" as tag_id %}
+                        <li class = "list-group-item order-child" id="{{ 'tag_'|add:tag_id}}"><a href="{% url 'app:tag' tag.name %}">{{ tag.name }}</a></li>
+                    {% endwith %}
+                    {% endfor %}
+                </ul>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-8 order-md-1 mt-3" >
+        <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Sentence</th>
+          <!--<th>tag</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        {% for sentence in sentence_list %}
+        <tr>
+          <td>{{ sentence.pk }}</td>
+          <td>{{ sentence.name }}</td>
+          <!--<td>{% for tag in sentence.tag.all %}{{ tag.name }},{% endfor %}</td>-->
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block domready %}
+<!--
+    <script>
+    $(function() {
+            $(".order").sortable();
+        });
+    </script>
+-->
+
+<script>
+    $(function() {
+        $(".order").sortable({
+            update: function (event, ui) {
+                var updateinfo = $('.order').sortable().sortable('serialize');
+
+                //console.log($('.order'));
+                //console.log(updateinfo);
+                //console.log($(this).serialize());
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'app:sort' %}",
+                    data: updateinfo,
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
